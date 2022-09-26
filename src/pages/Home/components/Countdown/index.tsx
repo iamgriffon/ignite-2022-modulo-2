@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { CountdownContainer, Separator } from './styles'
 import { differenceInSeconds } from 'date-fns'
-import { useTask } from '../../../../context/TasksProvider'
+import { useTask } from '../../../../context/TasksContext'
 
 export function Countdown() {
   const {
@@ -27,7 +27,7 @@ export function Countdown() {
       interval = setInterval(() => {
         const totalSecondsLeft = differenceInSeconds(
           new Date(),
-          activeTask.startDate,
+          new Date(activeTask.startDate),
         )
         if (totalSecondsLeft >= totalSeconds) {
           finishTask()

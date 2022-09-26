@@ -1,4 +1,5 @@
 import { HandPalm, Play } from 'phosphor-react'
+import * as zod from 'zod'
 
 import {
   HomeContainer,
@@ -9,20 +10,15 @@ import { NewTaskForm } from './components/NewTaskForm'
 import { Countdown } from './components/Countdown'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  NewTaskFormData,
-  newTaskFormValidationSchema,
-  useTask,
-} from '../../context/TasksProvider'
+import { NewTaskFormData, useTask } from '../../context/TasksContext'
 
-export interface Task {
-  id: string
-  task: string
-  minutesAmount: number
-  startDate: Date
-  interruptedDate?: Date
-  finishedDate?: Date
-}
+const newTaskFormValidationSchema = zod.object({
+  task: zod.string().min(5, 'Task name must have more than 5 characters'),
+  minutesAmount: zod
+    .number()
+    .min(1, 'Task duration must be longer than 1 minute')
+    .max(60, 'Task duration cannot be longer than 5 minutes'),
+})
 
 export function Home() {
   const newTaskForm = useForm<NewTaskFormData>({

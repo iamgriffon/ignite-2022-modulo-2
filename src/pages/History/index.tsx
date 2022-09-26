@@ -1,7 +1,8 @@
-import { useTask } from '../../context/TasksProvider'
+import { useTask } from '../../context/TasksContext'
 import { HistoryContainer, HistoryList, Status } from './styles'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import { Task } from '../../reducers/tasks/reducer'
 
 export function History() {
   const { tasks } = useTask()
@@ -20,13 +21,13 @@ export function History() {
             </tr>
           </thead>
           <tbody>
-            {tasks.map((task) => {
+            {tasks.map((task: Task) => {
               return (
                 <tr key={task.id}>
                   <td>{task.task}</td>
                   <td>{task.minutesAmount} min</td>
                   <td>
-                    {formatDistanceToNow(task.startDate, {
+                    {formatDistanceToNow(new Date(task.startDate), {
                       addSuffix: true,
                       locale: ptBR,
                     })}
